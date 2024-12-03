@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthy Hearts</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #1e1e1e;
+    color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+}
+
+.left {
+    flex: 1;
+    padding-right: 100px;
+}
+
+.right {
+    flex: 1;
+    background: rgba(30, 30, 30, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    transition: box-shadow 0.3s ease-in-out;
+    height: 400px;
+    overflow-y: auto;
+}
+
+.left h2 {
+    color: #ffffff;
+    text-align: center;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(255, 255, 255, 0.6),
+        0 0 30px rgba(255, 255, 0, 0.5);
+}
+
+
+.right:hover {
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+}
+
+h1 {
+    background: linear-gradient(to right, red, orange, goldenrod, yellow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+h2 {
+    color: #333;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #f4f4f4;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #444;
+    color: #f4f4f4;
+}
+
+.submit-btn {
+    background-color: #5cb85c;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #4cae4c;
+}
+
+.result-container {
+    margin-top: 20px;
+    background-color: rgba(240, 240, 240, 0.1);
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.facts-heading {
+    color: transparent;
+    background: linear-gradient(to right, #ff007f, #ffcc00);
+    -webkit-background-clip: text;
+    text-shadow: 0 0 10px rgba(255, 0, 127, 0.8),
+        0 0 20px rgba(255, 204, 0, 0.6);
+    font-size: 2em;
+    text-align: center;
+    margin: 10px 0;
+}
+
+h1 {
+    color: transparent;
+    background: linear-gradient(to right, #ff007f, #ffcc00);
+    -webkit-background-clip: text;
+    text-shadow: 0 0 10px rgba(255, 0, 127, 0.8),
+        0 0 20px rgba(255, 204, 0, 0.6);
+    text-align: center;
+    margin: 20px 0;
+    font-size: 3em;
+}
+</style>
+<body>
+    <h1>HEALTHY HEARTS</h1>
+    <div class="container">
+       <div class="left">
+            <h3 class="facts-heading">Facts</h3>
+            <h2 id="randomText">Random Text</h2>
+        </div>
+        <div class="right">
+            <h1>Enter your details here</h1>
+            <form id="predictionForm">
+                <div class="input-group">
+                    <label for="input1">Age:</label>
+                    <input type="number" id="input1" step="any" required>
+                </div>
+                <div class="input-group">
+                    <label for="input2">Gender:</label>
+                    <input type="number" id="input2" placeholder="Enter 0 for female and 1 for male" step="any" required>
+                </div>
+                <div class="input-group">
+                    <label for="input3">Chest Pain:</label>
+                    <input type="number" id="input3" placeholder="Enter values between 0 and 4" step="any" required>
+                </div>
+                <div class="input-group">
+                    <label for="input4">Resting Blood Pressure:</label>
+                    <input type="number" id="input4" step="any" required>
+                </div>
+                <div class="input-group">
+                    <label for="input5">Cholesterol:</label>
+                    <input type="number" id="input5" step="any" required>
+                </div>
+                <div class="input-group">
+                    <label for="input6">Diabetes:</label>
+                    <input type="number" id="input6" placeholder="Enter 0 for no and 1 for yes" step="any" required>
+                </div>
+                <div class="input-group">
+                    <label for="input7">Heart Rate:</label>
+                    <input type="number" id="input7" step="any" required>
+                </div>
+                
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+            <div id="resultContainer" class="result-container">
+                <h2>Result</h2>
+                <p id="predictionResult">-</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const randomTexts = [
+            "Engage in at least 30 minutes of moderate-intensity exercise, such as brisk walking, cycling, or swimming, most days of the week. Physical activity helps improve circulation, strengthen the heart muscle, and manage weight, all of which are essential for heart health.",
+            "Regular check-ups can help detect risk factors such as high cholesterol, hypertension, or diabetes early. Follow your doctor’s advice and take prescribed medications as directed to manage these conditions effectively.",
+            "Chronic stress can harm your heart by increasing blood pressure and leading to unhealthy coping mechanisms like overeating. Practice relaxation techniques like meditation, yoga, or deep breathing to reduce stress levels.",
+            "Smoking damages blood vessels and increases the risk of heart disease. If you smoke, seek help to quit. Additionally, limit alcohol consumption as excessive drinking can raise blood pressure and contribute to heart problems.",
+            "Focus on a heart-friendly diet rich in fruits, vegetables, whole grains, lean proteins, and healthy fats like those found in nuts and fish. Limit the intake of salt, sugar, and saturated fats to keep your cholesterol and blood pressure in check."
+        ];
+
+        function getRandomText() {
+            const randomIndex = Math.floor(Math.random() * randomTexts.length);
+            return randomTexts[randomIndex];
+        }
+
+        document.getElementById('randomText').innerText = getRandomText();
+        document.getElementById('currentDate').innerText = new Date().toLocaleDateString();
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
